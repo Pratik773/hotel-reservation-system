@@ -1,5 +1,7 @@
 package com.hotel.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import com.hotel.entity.Hotel;
 import com.hotel.service.HotelService;
 import org.springframework.web.bind.annotation.*;
@@ -23,27 +25,36 @@ public class HotelController {
     }
 
     @PostMapping
-    public Hotel addHotel(@RequestBody Hotel hotel) {
-        return hotelService.addHotel(hotel);
+    public ResponseEntity<Hotel> addHotel(@RequestBody Hotel hotel) {
+
+        Hotel savedHotel = hotelService.addHotel(hotel);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(savedHotel);
     }
 
     @GetMapping("/{id}")
-    public Hotel getHotelById(@PathVariable Long id) {
+    public ResponseEntity<Hotel> getHotelById(@PathVariable Long id) {
 
-        return hotelService.getHotelById(id);
+        Hotel hotel = hotelService.getHotelById(id);
 
+        if (hotel == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(hotel);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteHotel(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
 
         boolean deleted = hotelService.deleteHotel(id);
 
-        if (deleted) {
-            return "Hotel deleted successfully";
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
         }
 
-        return "Hotel not found";
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
