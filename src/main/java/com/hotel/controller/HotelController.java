@@ -71,5 +71,12 @@ public class HotelController {
 
         return ResponseEntity.ok(hotelService.getHotelsByCity(city));
     }
+    @GetMapping("/filter")
+    public ResponseEntity<List<HotelResponse>> getHotelsByMaxPrice(
+            @RequestParam Double price) {
+
+        return ResponseEntity.ok(hotelService.getHotelsByMaxPrice(price));
+
+    }
 
 }

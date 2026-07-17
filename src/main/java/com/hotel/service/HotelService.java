@@ -86,7 +86,19 @@ public class HotelService {
     }
     public List<HotelResponse> getHotelsByCity(String city) {
 
-        List<Hotel> hotels = hotelRepository.findByCity(city);
+        List<Hotel> hotels = hotelRepository.findByCityContainingIgnoreCase(city);
+
+        List<HotelResponse> response = new ArrayList<>();
+
+        for (Hotel hotel : hotels) {
+            response.add(mapToResponse(hotel));
+        }
+
+        return response;
+    }
+    public List<HotelResponse> getHotelsByMaxPrice(Double price) {
+
+        List<Hotel> hotels = hotelRepository.findByPriceLessThanEqual(price);
 
         List<HotelResponse> response = new ArrayList<>();
 
