@@ -1,6 +1,9 @@
 package com.hotel.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 
 @Entity
 @Table(name = "hotels")
@@ -10,12 +13,15 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Hotel name is required")
     @Column(nullable = false)
     private String name;
 
+    @NotBlank(message = "City is required")
     @Column(nullable = false)
     private String city;
 
+    @Positive(message = "Price must be greater than zero")
     @Column(nullable = false)
     private Double price;
 

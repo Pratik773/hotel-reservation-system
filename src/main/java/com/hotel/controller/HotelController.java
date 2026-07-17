@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import com.hotel.entity.Hotel;
 import com.hotel.service.HotelService;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class HotelController {
     }
 
     @PostMapping
-    public ResponseEntity<Hotel> addHotel(@RequestBody Hotel hotel) {
+    public ResponseEntity<Hotel> addHotel(@Valid @RequestBody Hotel hotel) {
 
         Hotel savedHotel = hotelService.addHotel(hotel);
 
@@ -49,10 +50,13 @@ public class HotelController {
     }
 
     @PutMapping("/{id}")
-    public Hotel updateHotel(@PathVariable Long id,
-                             @RequestBody Hotel hotel) {
+    public ResponseEntity<Hotel> updateHotel(
+            @PathVariable Long id,
+            @Valid @RequestBody Hotel hotel) {
 
-        return hotelService.updateHotel(id, hotel);
+        Hotel updatedHotel = hotelService.updateHotel(id, hotel);
+
+        return ResponseEntity.ok(updatedHotel);
 
     }
 
