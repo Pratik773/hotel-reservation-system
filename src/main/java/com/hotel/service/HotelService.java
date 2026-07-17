@@ -77,7 +77,11 @@ public class HotelService {
     }
     private HotelResponse mapToResponse(Hotel hotel) {
 
-        return mapToResponse(hotel);
-
+        return new HotelResponse(
+                hotel.getId(),
+                hotel.getName(),
+                hotel.getCity(),
+                hotel.getPrice()
+        );
     }
 }
