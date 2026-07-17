@@ -1,5 +1,7 @@
 package com.hotel.controller;
 
+import com.hotel.dto.HotelResponse;
+import com.hotel.dto.HotelRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.hotel.entity.Hotel;
@@ -26,12 +28,14 @@ public class HotelController {
     }
 
     @PostMapping
-    public ResponseEntity<Hotel> addHotel(@Valid @RequestBody Hotel hotel) {
+    public ResponseEntity<HotelResponse> addHotel(
+            @Valid @RequestBody HotelRequest request) {
 
-        Hotel savedHotel = hotelService.addHotel(hotel);
+        HotelResponse response = hotelService.addHotel(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(savedHotel);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @GetMapping("/{id}")

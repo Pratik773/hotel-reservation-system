@@ -1,5 +1,7 @@
 package com.hotel.service;
 
+import com.hotel.dto.HotelRequest;
+import com.hotel.dto.HotelResponse;
 import com.hotel.exception.HotelNotFoundException;
 import com.hotel.entity.Hotel;
 import com.hotel.repository.HotelRepository;
@@ -20,8 +22,22 @@ public class HotelService {
         return hotelRepository.findAll();
     }
 
-    public Hotel addHotel(Hotel hotel) {
-        return hotelRepository.save(hotel);
+    public HotelResponse addHotel(HotelRequest request) {
+
+        Hotel hotel = new Hotel();
+
+        hotel.setName(request.getName());
+        hotel.setCity(request.getCity());
+        hotel.setPrice(request.getPrice());
+
+        Hotel savedHotel = hotelRepository.save(hotel);
+
+        return new HotelResponse(
+                savedHotel.getId(),
+                savedHotel.getName(),
+                savedHotel.getCity(),
+                savedHotel.getPrice()
+        );
     }
 
     public Hotel getHotelById(Long id) {
