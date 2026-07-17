@@ -41,7 +41,8 @@ public class HotelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HotelResponse> getHotelById(@PathVariable Long id) {
+    public ResponseEntity<HotelResponse> getHotelById(
+            @PathVariable Long id) {
 
         return ResponseEntity.ok(hotelService.getHotelById(id));
 
@@ -56,14 +57,13 @@ public class HotelController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Hotel> updateHotel(
+    public ResponseEntity<HotelResponse> updateHotel(
             @PathVariable Long id,
-            @Valid @RequestBody Hotel hotel) {
+            @Valid @RequestBody HotelRequest request) {
 
-        Hotel updatedHotel = hotelService.updateHotel(id, hotel);
+        HotelResponse response = hotelService.updateHotel(id, request);
 
-        return ResponseEntity.ok(updatedHotel);
-
+        return ResponseEntity.ok(response);
     }
 
 }

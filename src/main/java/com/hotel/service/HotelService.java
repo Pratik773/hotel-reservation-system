@@ -26,15 +26,10 @@ public class HotelService {
         List<HotelResponse> response = new ArrayList<>();
 
         for (Hotel hotel : hotels) {
-
-            response.add(
-                    mapToResponse(hotel)
-            );
-
+            response.add(mapToResponse(hotel));
         }
 
         return response;
-
     }
 
     public HotelResponse addHotel(HotelRequest request) {
@@ -47,12 +42,7 @@ public class HotelService {
 
         Hotel savedHotel = hotelRepository.save(hotel);
 
-        return new HotelResponse(
-                savedHotel.getId(),
-                savedHotel.getName(),
-                savedHotel.getCity(),
-                savedHotel.getPrice()
-        );
+        return mapToResponse(savedHotel);
     }
 
     public HotelResponse getHotelById(Long id) {
@@ -60,25 +50,21 @@ public class HotelService {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new HotelNotFoundException(id));
 
-        return new HotelResponse(
-                hotel.getId(),
-                hotel.getName(),
-                hotel.getCity(),
-                hotel.getPrice()
-        );
-
+        return mapToResponse(hotel);
     }
 
-    public Hotel updateHotel(Long id, Hotel updatedHotel) {
+    public HotelResponse updateHotel(Long id, HotelRequest request) {
 
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new HotelNotFoundException(id));
 
-        hotel.setName(updatedHotel.getName());
-        hotel.setCity(updatedHotel.getCity());
-        hotel.setPrice(updatedHotel.getPrice());
+        hotel.setName(request.getName());
+        hotel.setCity(request.getCity());
+        hotel.setPrice(request.getPrice());
 
-        return hotelRepository.save(hotel);
+        Hotel updatedHotel = hotelRepository.save(hotel);
+
+        return mapToResponse(updatedHotel);
     }
 
     public void deleteHotel(Long id) {
