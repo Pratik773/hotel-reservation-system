@@ -1,5 +1,6 @@
 package com.hotel.service;
 
+import com.hotel.exception.HotelNotFoundException;
 import com.hotel.entity.Hotel;
 import com.hotel.repository.HotelRepository;
 import org.springframework.stereotype.Service;
@@ -24,16 +25,13 @@ public class HotelService {
     }
 
     public Hotel getHotelById(Long id) {
-        return hotelRepository.findById(id).orElse(null);
+        return hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException(id));
     }
 
     public Hotel updateHotel(Long id, Hotel updatedHotel) {
 
-        Hotel hotel = hotelRepository.findById(id).orElse(null);
-
-        if (hotel == null) {
-            return null;
-        }
+        Hotel hotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new HotelNotFoundException(id));
 
         hotel.setName(updatedHotel.getName());
         hotel.setCity(updatedHotel.getCity());
@@ -42,13 +40,12 @@ public class HotelService {
         return hotelRepository.save(hotel);
     }
 
-    public boolean deleteHotel(Long id) {
+    public void deleteHotel(Long id) {
 
-        if (!hotelRepository.existsById(id)) {
-            return false;
-        }
+        Hotel hotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new HotelNotFoundException(id));
 
-        hotelRepository.deleteById(id);
-        return true;
+        hotelRepository.delete(hotel);
+
     }
 }

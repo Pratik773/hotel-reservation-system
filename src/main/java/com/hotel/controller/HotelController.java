@@ -36,23 +36,14 @@ public class HotelController {
     @GetMapping("/{id}")
     public ResponseEntity<Hotel> getHotelById(@PathVariable Long id) {
 
-        Hotel hotel = hotelService.getHotelById(id);
+        return ResponseEntity.ok(hotelService.getHotelById(id));
 
-        if (hotel == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(hotel);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
 
-        boolean deleted = hotelService.deleteHotel(id);
-
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
-        }
+        hotelService.deleteHotel(id);
 
         return ResponseEntity.noContent().build();
     }
