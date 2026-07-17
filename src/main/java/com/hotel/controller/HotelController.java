@@ -65,5 +65,11 @@ public class HotelController {
 
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<HotelResponse>> getHotelsByCity(
+            @RequestParam String city) {
+
+        return ResponseEntity.ok(hotelService.getHotelsByCity(city));
+    }
 
 }

@@ -84,4 +84,16 @@ public class HotelService {
                 hotel.getPrice()
         );
     }
+    public List<HotelResponse> getHotelsByCity(String city) {
+
+        List<Hotel> hotels = hotelRepository.findByCity(city);
+
+        List<HotelResponse> response = new ArrayList<>();
+
+        for (Hotel hotel : hotels) {
+            response.add(mapToResponse(hotel));
+        }
+
+        return response;
+    }
 }
