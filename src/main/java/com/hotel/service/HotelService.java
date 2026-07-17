@@ -8,6 +8,7 @@ import com.hotel.repository.HotelRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class HotelService {
@@ -18,8 +19,22 @@ public class HotelService {
         this.hotelRepository = hotelRepository;
     }
 
-    public List<Hotel> getAllHotels() {
-        return hotelRepository.findAll();
+    public List<HotelResponse> getAllHotels() {
+
+        List<Hotel> hotels = hotelRepository.findAll();
+
+        List<HotelResponse> response = new ArrayList<>();
+
+        for (Hotel hotel : hotels) {
+
+            response.add(
+                    mapToResponse(hotel)
+            );
+
+        }
+
+        return response;
+
     }
 
     public HotelResponse addHotel(HotelRequest request) {
@@ -40,8 +55,18 @@ public class HotelService {
         );
     }
 
-    public Hotel getHotelById(Long id) {
-        return hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException(id));
+    public HotelResponse getHotelById(Long id) {
+
+        Hotel hotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new HotelNotFoundException(id));
+
+        return new HotelResponse(
+                hotel.getId(),
+                hotel.getName(),
+                hotel.getCity(),
+                hotel.getPrice()
+        );
+
     }
 
     public Hotel updateHotel(Long id, Hotel updatedHotel) {
@@ -62,6 +87,11 @@ public class HotelService {
                 .orElseThrow(() -> new HotelNotFoundException(id));
 
         hotelRepository.delete(hotel);
+
+    }
+    private HotelResponse mapToResponse(Hotel hotel) {
+
+        return mapToResponse(hotel);
 
     }
 }

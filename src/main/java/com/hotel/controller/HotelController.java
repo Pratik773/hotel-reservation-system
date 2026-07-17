@@ -23,8 +23,10 @@ public class HotelController {
     }
 
     @GetMapping
-    public List<Hotel> getAllHotels() {
-        return hotelService.getAllHotels();
+    public ResponseEntity<List<HotelResponse>> getAllHotels() {
+
+        return ResponseEntity.ok(hotelService.getAllHotels());
+
     }
 
     @PostMapping
@@ -39,7 +41,7 @@ public class HotelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hotel> getHotelById(@PathVariable Long id) {
+    public ResponseEntity<HotelResponse> getHotelById(@PathVariable Long id) {
 
         return ResponseEntity.ok(hotelService.getHotelById(id));
 
