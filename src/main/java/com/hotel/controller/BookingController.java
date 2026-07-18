@@ -2,6 +2,7 @@ package com.hotel.controller;
 
 import com.hotel.dto.BookingRequest;
 import com.hotel.dto.BookingResponse;
+import com.hotel.response.ApiResponse;
 import com.hotel.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -19,15 +20,17 @@ public class BookingController {
     }
 
     @PostMapping("/room/{roomId}")
-    public ResponseEntity<BookingResponse> createBooking(
+    public ResponseEntity<ApiResponse<BookingResponse>> createBooking(
             @PathVariable Long roomId,
             @Valid @RequestBody BookingRequest request) {
 
-        BookingResponse response =
-                bookingService.createBooking(roomId, request);
+        BookingResponse response = bookingService.createBooking(roomId, request);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(
+                        true,
+                        "Booking created successfully",
+                        response
+                ));
     }
 }

@@ -16,5 +16,19 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
 
     }
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ResponseEntity<String> handleRoomNotFound(RoomNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(BookingNotFoundException.class)
+    public ResponseEntity<String> handleBookingNotFound(BookingNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(RoomAlreadyBookedException.class)
+    public ResponseEntity<String> handleRoomAlreadyBooked(RoomAlreadyBookedException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 
 }

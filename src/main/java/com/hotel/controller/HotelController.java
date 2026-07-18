@@ -2,6 +2,7 @@ package com.hotel.controller;
 
 import com.hotel.dto.HotelResponse;
 import com.hotel.dto.HotelRequest;
+import com.hotel.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.hotel.entity.Hotel;
@@ -23,21 +24,31 @@ public class HotelController {
     }
 
     @GetMapping
-    public ResponseEntity<List<HotelResponse>> getAllHotels() {
+    public ResponseEntity<ApiResponse<List<HotelResponse>>> getAllHotels() {
 
-        return ResponseEntity.ok(hotelService.getAllHotels());
+        List<HotelResponse> hotels = hotelService.getAllHotels();
 
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        "Hotels fetched successfully",
+                        hotels
+                )
+        );
     }
 
     @PostMapping
-    public ResponseEntity<HotelResponse> addHotel(
+    public ResponseEntity<ApiResponse<HotelResponse>> createHotel(
             @Valid @RequestBody HotelRequest request) {
 
         HotelResponse response = hotelService.addHotel(request);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(
+                        true,
+                        "Hotel created successfully",
+                        response
+                ));
     }
 
     @GetMapping("/{id}")

@@ -2,6 +2,7 @@ package com.hotel.controller;
 
 import com.hotel.dto.RoomRequest;
 import com.hotel.dto.RoomResponse;
+import com.hotel.response.ApiResponse;
 import com.hotel.service.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -39,11 +40,17 @@ public class RoomController {
         );
     }
     @GetMapping("/{roomId}")
-    public ResponseEntity<RoomResponse> getRoomById(
+    public ResponseEntity<ApiResponse<RoomResponse>> getRoomById(
             @PathVariable Long roomId) {
 
+        RoomResponse room = roomService.getRoomById(roomId);
+
         return ResponseEntity.ok(
-                roomService.getRoomById(roomId)
+                new ApiResponse<>(
+                        true,
+                        "Room fetched successfully",
+                        room
+                )
         );
     }
     @PutMapping("/{roomId}")
