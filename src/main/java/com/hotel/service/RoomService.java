@@ -8,6 +8,8 @@ import com.hotel.exception.HotelNotFoundException;
 import com.hotel.repository.HotelRepository;
 import com.hotel.repository.RoomRepository;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RoomService {
@@ -52,6 +54,55 @@ public class RoomService {
                 room.getHotel().getId(),
                 room.getHotel().getName()
         );
+    }
+    public List<RoomResponse> getRoomsByHotel(Long hotelId) {
+
+        // Check if hotel exists
+        hotelRepository.findById(hotelId)
+                .orElseThrow(() -> new HotelNotFoundException(hotelId));
+
+        List<Room> rooms = roomRepository.findByHotelId(hotelId);
+
+        List<RoomResponse> response = new ArrayList<>();
+
+        for (Room room : rooms) {
+            response.add(mapToResponse(room));
+        }
+
+        return response;
+    }
+
+    public RoomResponse getRoomById(Long roomId) {
+
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() ->
+                        new RuntimeException("Room not found with id: " + roomId));
+
+        return mapToResponse(room);
+    }
+    public RoomResponse updateRoom(Long roomId,
+                                   RoomRequest request) {
+
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() ->
+                        new RuntimeException("Room not found with id: " + roomId));
+
+        room.setRoomNumber(request.getRoomNumber());
+        room.setRoomType(request.getRoomType());
+        room.setPricePerNight(request.getPricePerNight());
+        room.setAvailable(request.getAvailable());
+
+        Room updatedRoom = roomRepository.save(room);
+
+        return mapToResponse(updatedRoom);
+    }
+    public void deleteRoom(Long roomId) {
+
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() ->
+                        new RuntimeException("Room not found with id: " + roomId));
+
+        roomRepository.delete(room);
     }
 
 }
