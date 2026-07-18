@@ -69,4 +69,6 @@ public class Hotel {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+
 }

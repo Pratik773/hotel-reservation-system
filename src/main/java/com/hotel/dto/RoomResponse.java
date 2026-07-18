@@ -1,41 +1,33 @@
-package com.hotel.entity;
+package com.hotel.dto;
 
-import jakarta.persistence.*;
+public class RoomResponse {
 
-@Entity
-@Table(name = "rooms")
-public class Room {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String roomNumber;
-
-    @Column(nullable = false)
     private String roomType;
-
-    @Column(nullable = false)
     private Double pricePerNight;
-
-    @Column(nullable = false)
     private Boolean available;
+    private Long hotelId;
+    private String hotelName;
 
-    @ManyToOne
-    @JoinColumn(name = "hotel_id")
-    private Hotel hotel;
-
-    public Room() {
+    public RoomResponse() {
     }
 
-    public Room(Long id, String roomNumber, String roomType, Double pricePerNight, Boolean available, Hotel hotel) {
+    public RoomResponse(Long id,
+                        String roomNumber,
+                        String roomType,
+                        Double pricePerNight,
+                        Boolean available,
+                        Long hotelId,
+                        String hotelName) {
+
         this.id = id;
         this.roomNumber = roomNumber;
         this.roomType = roomType;
         this.pricePerNight = pricePerNight;
         this.available = available;
-        this.hotel = hotel;
+        this.hotelId = hotelId;
+        this.hotelName = hotelName;
     }
 
     public Long getId() {
@@ -78,12 +70,20 @@ public class Room {
         this.available=available;
     }
 
-    public Hotel getHotel() {
-        return hotel;
+    public Long getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel(Hotel hotel) {
-        this.hotel=hotel;
+    public void setHotelId(Long hotelId) {
+        this.hotelId=hotelId;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName=hotelName;
     }
 
 }
