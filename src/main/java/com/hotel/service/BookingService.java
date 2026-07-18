@@ -9,6 +9,7 @@ import com.hotel.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class BookingService {
@@ -30,6 +31,11 @@ public class BookingService {
                 .orElseThrow(() ->
                         new RuntimeException("Room not found with id: " + roomId));
 
+        if (!isRoomAvailable(room, request)) {
+            throw new RuntimeException(
+                    "Room is already booked for the selected dates."
+            );
+        }
         long totalDays = ChronoUnit.DAYS.between(
                 request.getCheckIn(),
                 request.getCheckOut()
@@ -67,5 +73,26 @@ public class BookingService {
                 booking.getRoom().getId(),
                 booking.getRoom().getRoomNumber()
         );
+    }
+    private boolean isRoomAvailable(Room room,
+                                    BookingRequest request) {
+
+        List<Booking> bookings =
+                bookingRepository.findByRoomId(room.getId());
+
+        for (Booking booking : bookings) {
+
+            boolean overlap =
+                    request.getCheckIn().isBefore(booking.getCheckOut())
+                            &&
+                            request.getCheckOut().isAfter(booking.getCheckIn());
+
+            if (overlap) {
+                return false;
+            }
+
+        }
+
+        return true;
     }
 }
