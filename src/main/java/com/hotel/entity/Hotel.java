@@ -3,7 +3,7 @@ package com.hotel.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-
+import java.util.List;
 
 @Entity
 @Table(name = "hotels")
@@ -24,6 +24,9 @@ public class Hotel {
     @Positive(message = "Price must be greater than zero")
     @Column(nullable = false)
     private Double price;
+
+    @OneToMany(mappedBy = "hotel")
+    private List<Room> rooms;
 
     public Hotel() {
     }

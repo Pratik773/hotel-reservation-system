@@ -8,7 +8,7 @@ import com.hotel.entity.Hotel;
 import com.hotel.service.HotelService;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-
+import org.springframework.data.domain.Page;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +76,25 @@ public class HotelController {
             @RequestParam Double price) {
 
         return ResponseEntity.ok(hotelService.getHotelsByMaxPrice(price));
+
+    }
+    @GetMapping("/sort")
+    public ResponseEntity<List<HotelResponse>> getHotelsSortedByPrice() {
+
+        return ResponseEntity.ok(
+                hotelService.getHotelsSortedByPrice()
+        );
+
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<Hotel>> getHotels(
+            @RequestParam int page,
+            @RequestParam int size) {
+
+        return ResponseEntity.ok(
+                hotelService.getHotels(page, size)
+        );
 
     }
 

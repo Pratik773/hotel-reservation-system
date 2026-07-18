@@ -6,6 +6,10 @@ import com.hotel.exception.HotelNotFoundException;
 import com.hotel.entity.Hotel;
 import com.hotel.repository.HotelRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -107,5 +111,26 @@ public class HotelService {
         }
 
         return response;
+    }
+    public List<HotelResponse> getHotelsSortedByPrice() {
+
+        List<Hotel> hotels = hotelRepository.findAll(
+                Sort.by("price").ascending()
+        );
+
+        List<HotelResponse> response = new ArrayList<>();
+
+        for (Hotel hotel : hotels) {
+            response.add(mapToResponse(hotel));
+        }
+
+        return response;
+    }
+    public Page<Hotel> getHotels(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return hotelRepository.findAll(pageable);
+
     }
 }
