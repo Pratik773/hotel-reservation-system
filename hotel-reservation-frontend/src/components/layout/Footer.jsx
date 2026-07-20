@@ -2,20 +2,26 @@ function Footer() {
 
     return (
 
-        <footer className="bg-slate-900 text-white py-10 mt-20">
+        <footer className="bg-slate-900 text-white mt-20">
 
-            <div className="max-w-7xl mx-auto text-center">
+            <div className="max-w-7xl mx-auto py-12 text-center">
 
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-3xl font-bold">
+
                     StayEase
+
                 </h2>
 
-                <p className="mt-3 text-gray-400">
-                    Book Hotels Easily & Comfortably
+                <p className="mt-4 text-gray-400">
+
+                    Find your perfect stay anywhere.
+
                 </p>
 
-                <p className="mt-6 text-sm text-gray-500">
-                    © 2026 StayEase. All rights reserved.
+                <p className="mt-8 text-sm text-gray-500">
+
+                    © 2026 StayEase. All Rights Reserved.
+
                 </p>
 
             </div>
