@@ -5,7 +5,7 @@ function Navbar() {
 
     return (
 
-        <header className="sticky top-0 bg-white shadow-md z-50">
+        <header className="fixed top-0 left-0 w-full z-50 bg-transparent text-white">
 
             <div className="max-w-7xl mx-auto flex justify-between items-center px-8 py-5">
 
@@ -19,7 +19,7 @@ function Navbar() {
                         className="text-blue-600"
                     />
 
-                    <span className="text-3xl font-bold text-blue-700">
+                    <span className="text-3xl font-bold text-white">
 
                         StayEase
 
@@ -29,13 +29,13 @@ function Navbar() {
 
                 <nav className="hidden md:flex gap-8 font-medium">
 
-                    <Link to="/">Home</Link>
+                    <Link className="hover:text-blue-300 transition" to="/">Home</Link>
 
-                    <Link to="/">Hotels</Link>
+                    <Link className="hover:text-blue-300 transition" to="/">Hotels</Link>
 
-                    <Link to="/">About</Link>
+                    <Link className="hover:text-blue-300 transition" to="/">About</Link>
 
-                    <Link to="/">Contact</Link>
+                    <Link className="hover:text-blue-300 transition" to="/">Contact</Link>
 
                 </nav>
 
