@@ -1,0 +1,112 @@
+package com.hotel.controller;
+
+import com.hotel.dto.HotelResponse;
+import com.hotel.dto.HotelRequest;
+import com.hotel.response.ApiResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import com.hotel.entity.Hotel;
+import com.hotel.service.HotelService;
+import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/hotels")
+public class HotelController {
+
+    private final HotelService hotelService;
+
+    public HotelController(HotelService hotelService) {
+        this.hotelService = hotelService;
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<HotelResponse>>> getAllHotels() {
+
+        List<HotelResponse> hotels = hotelService.getAllHotels();
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        "Hotels fetched successfully",
+                        hotels
+                )
+        );
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<HotelResponse>> createHotel(
+            @Valid @RequestBody HotelRequest request) {
+
+        HotelResponse response = hotelService.addHotel(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(
+                        true,
+                        "Hotel created successfully",
+                        response
+                ));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HotelResponse> getHotelById(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(hotelService.getHotelById(id));
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
+
+        hotelService.deleteHotel(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<HotelResponse> updateHotel(
+            @PathVariable Long id,
+            @Valid @RequestBody HotelRequest request) {
+
+        HotelResponse response = hotelService.updateHotel(id, request);
+
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/search")
+    public ResponseEntity<List<HotelResponse>> getHotelsByCity(
+            @RequestParam String city) {
+
+        return ResponseEntity.ok(hotelService.getHotelsByCity(city));
+    }
+    @GetMapping("/filter")
+    public ResponseEntity<List<HotelResponse>> getHotelsByMaxPrice(
+            @RequestParam Double price) {
+
+        return ResponseEntity.ok(hotelService.getHotelsByMaxPrice(price));
+
+    }
+    @GetMapping("/sort")
+    public ResponseEntity<List<HotelResponse>> getHotelsSortedByPrice() {
+
+        return ResponseEntity.ok(
+                hotelService.getHotelsSortedByPrice()
+        );
+
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<Hotel>> getHotels(
+            @RequestParam int page,
+            @RequestParam int size) {
+
+        return ResponseEntity.ok(
+                hotelService.getHotels(page, size)
+        );
+
+    }
+
+}
